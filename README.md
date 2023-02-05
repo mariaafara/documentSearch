@@ -48,7 +48,6 @@ a threshold. The remaining documents are returned with the N-grams that initiall
 
 ### Pipeline
 
-- preprocessing
 - indexing
 - searching/filtering
 

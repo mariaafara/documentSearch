@@ -9,14 +9,14 @@ from search.indexer import Indexer, EmbeddingIndexer
 from search.processor import Processor, EmbeddingProcessor
 from search.searcher.embedding_searcher import EmbeddingSearcher
 from search.searcher.searcher import Searcher
+from tqdm import tqdm
 
 
 def load_documents(excel_path) -> Dict[str, Document]:
-    print("Loading documents...")
     documents_df = pd.read_excel(excel_path, sheet_name="documents")
     documents_df = documents_df[~documents_df.text.isnull()]
     documents = {}
-    for i, row in documents_df.iterrows():
+    for i, row in tqdm(documents_df.iterrows(), desc="Loading documents"):
         documents[row["id"]] = Document(
             id=row["id"],
             extracted_at=row["extracted"],
@@ -66,11 +66,14 @@ if __name__ == "__main__":
         processor = EmbeddingProcessor(n=n_gram)
         in_memory_index_store = EmbeddingInMemoryIndexStore()
         indexer = EmbeddingIndexer(processor, in_memory_index_store)
-        searcher = EmbeddingSearcher(processor, in_memory_index_store, similarity_threshold=similarity_threshold)
+        searcher = EmbeddingSearcher(
+            processor, in_memory_index_store, similarity_threshold=similarity_threshold
+        )
 
-    indexer.index_docs(list(documents.values()))
-
+    # indexer.index_docs(list(documents.values())[:])
+    in_memory_index_store.load()
     for company_id, company_terms in companies.items():
+        print(company_id, company_terms)
         search_result = searcher.search(query_terms=company_terms)
 
         save(company_id, search_result)

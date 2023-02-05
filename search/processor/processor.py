@@ -6,7 +6,7 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
 nltk.download("stopwords")
-nltk.download('wordnet')
+nltk.download("wordnet")
 
 lemmatizer = WordNetLemmatizer()
 
@@ -59,11 +59,7 @@ class Processor:
         #     ngrams = set((nltk.ngrams(tokens, n)))
         return ngrams  # List of Tuples of (strs)
 
-    def compute_document_embedding(self, text: str):
-        """Embed a document."""
-        return None
-
-    def preprocess(self, text: str) -> (List[Tuple[str]], Union[None, List[float]]):
+    def preprocess(self, text: str) -> List[Tuple[str]]:
         """Preprocess input text."""
         # Remove punctuations
         text = Processor._punctuation_filter(text)
@@ -79,9 +75,7 @@ class Processor:
         tokens = Processor._lemmatize(tokens)
 
         ngrams = Processor._get_ngrams(tokens, self.n)
-        # embedded_ngrams = Processor.compute_ngrams_embeddings(list(ngrams))
-        embedded_doc = self.compute_document_embedding(text)
-        return ngrams, embedded_doc
+        return list(ngrams)
 
     def postprocess(self, ngrams: List[Tuple[str]]):
         """Combine contiguous N-grams."""

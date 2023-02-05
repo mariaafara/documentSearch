@@ -1,3 +1,4 @@
+import pickle
 from typing import List, Tuple
 from collections import defaultdict
 
@@ -12,21 +13,35 @@ class InMemoryIndexStore(IndexStore):
     """
 
     def __init__(self):
-        super(IndexStore).__init__()
+        super().__init__()
         self.ngrams_indices_dict = defaultdict(
             set
         )  # {ngram: [doc_id ngram mentions in]}
-        self.document_indices = {}  # {document_id: document_embedding}
 
-    def add_doc(self, doc_id, ngrams, document_embedding=None) -> None:
+    def add_doc(self, doc_id, ngrams, **kwargs) -> None:
+        """Add a single indexed document to the store."""
         for ngram in ngrams:
             self.ngrams_indices_dict[ngram].add(doc_id)
 
-    def get_docs(self, tokens: List[str]) -> List[Tuple[str, List[str]]]:
+    def add_docs(self, indices: List[Tuple[Tuple, List[str]]], **kwargs) -> None:
+        """Add a batch of indexed documents to the store."""
+        # [(ngram, [doc ids where ngram found in,..] )...]
+        for index in indices:
+            self.ngrams_indices_dict[index[0]].update(index[1])
+
+    def get_docs(self, ngrams: List[Tuple], **kwargs) -> List[Tuple[Tuple, List[str]]]:
         """return List[Tuple[str, List[str]]]: [(doc_id, [tokens matched in doc]),etc]"""
         result_dict = defaultdict(list)
-        for token in tokens:
-            docs_ids = self.ngrams_indices_dict[token]
+        for ngram in ngrams:
+            docs_ids = self.ngrams_indices_dict[ngram]
             for doc_id in docs_ids:
-                result_dict[doc_id].append(token)
+                result_dict[doc_id].append(ngram)
         return list(result_dict.items())
+
+    def save(self):
+        with open("serialized_ngrams_indices_dict.pkl", "wb") as f:
+            pickle.dump(self.ngrams_indices_dict, f)
+
+    def load(self):
+        with open("serialized_ngrams_indices_dict.pkl", "rb") as f:
+            self.ngrams_indices_dict = pickle.load(f)

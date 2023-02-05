@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
 from search.processor.processor import Processor
 import spacy
@@ -8,15 +8,6 @@ nlp = spacy.load("en_core_web_sm")
 
 
 class EmbeddingProcessor(Processor):
-    # @staticmethod
-    # def compute_ngrams_embeddings(ngrams: List[Tuple[str]]):
-    #     # Compute the n-gram embeddings using spacy lm
-    #     ngram_embeddings = []
-    #     for ngram in ngrams:
-    #         ngram_embedding = EmbeddingProcessor.compute_embedding(" ".join(ngram))
-    #         ngram_embeddings.append(ngram_embedding)
-    #     return ngram_embeddings
-
     @staticmethod
     def compute_embedding(text: str):
         return nlp(text).vector
@@ -24,3 +15,9 @@ class EmbeddingProcessor(Processor):
     def compute_document_embedding(self, text: str):
         """Embed a document."""
         return EmbeddingProcessor.compute_embedding(text)
+
+    def preprocess(self, text: str) -> (List[Tuple[str]], Union[None, List[float]]):
+        """Preprocess input text."""
+        ngrams = super().preprocess(text)
+        embedded_doc = self.compute_document_embedding(text)
+        return ngrams, embedded_doc

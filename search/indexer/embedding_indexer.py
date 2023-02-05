@@ -20,6 +20,7 @@ class EmbeddingIndexer(Indexer):
 
     def index_docs(self, documents: List[Document]) -> None:
         for document in documents:
+            print(document.id)
             preprocessed_doc, embedded_doc = self.processor.preprocess(document.text)
             self.index_store.add_doc(
                 doc_id=document.id,

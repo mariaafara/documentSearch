@@ -14,6 +14,7 @@ class Indexer:
 
     def index_docs(self, documents: List[Document]) -> None:
         for document in documents:
+            print(document.id)
             (
                 tokenized_doc,
                 _,
