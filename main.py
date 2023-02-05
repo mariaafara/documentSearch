@@ -28,8 +28,9 @@ if __name__ == "__main__":
     with open("data/input/companies.json", "rb") as jf:
         companies = json.load(jf)
 
+    processing_type = "n-grams"
     documents = load_documents("data/input/documents.xlsx")
-    processor = Processor()
+    processor = Processor(type=processing_type)
     in_memory_index_store = InMemoryIndexStore()
     indexer = Indexer(processor, in_memory_index_store)
     indexer.index_docs(list(documents.values()))
@@ -55,12 +56,12 @@ if __name__ == "__main__":
                 f"data/output/{company_id}.csv", sep=",", index=False
             )
 
-            print(
-                "Search Query for company ",
-                company_id,
-                "of terms: ",
-                company_terms,
-                "appeared in ",
-                len(search_result),
-            )
-            print("*" * 10)
+        print(
+            "Search Query for company ",
+            company_id,
+            "of terms: ",
+            company_terms,
+            "appeared in ",
+            len(search_result),
+        )
+        print("*" * 10)

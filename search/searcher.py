@@ -18,12 +18,19 @@ class Searcher:
         :return: List of filtered document ids with the matched keywords in the document.
         """
         result_dict = defaultdict(set)
-
+        queried_terms = set()
         for term in query_terms:
-            processed_term = self.processor.process(term)
-            term_result = self.index_store.get_docs(tokens=processed_term)
-            for doc_id, matched_tokens in term_result:
-                result_dict[doc_id].update(matched_tokens)
+            processed_term = set(self.processor.preprocess(term))
+            search_query = processed_term - queried_terms  # query new tokens or n-grams
+
+            # print(processed_term, "--", search_query)
+            queried_terms.update(search_query)
+            if search_query:
+                term_result = self.index_store.get_docs(tokens=list(search_query))
+                for doc_id, matched_tokens in term_result:
+                    result_dict[doc_id].update(matched_tokens)
+        print("-" * 10)
+        print(f"queried_terms= {queried_terms}")
 
         filtered_docs_with_matches = {}
         for doc_id, matched_tokens in result_dict.items():
