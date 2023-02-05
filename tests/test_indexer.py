@@ -1,7 +1,7 @@
 from search.document import Document
 from search.index_store.in_memory import InMemoryIndexStore
-from search.indexer import Indexer
-from search.processor import Processor
+from search.indexer.indexer import Indexer
+from search.processor.processor import Processor
 
 
 def test_indexer():
@@ -24,7 +24,7 @@ def test_indexer():
     indexer = Indexer(processor, index_store)
     indexer.index_docs(documents)
 
-    assert expected_indices_dict.keys() == index_store.indices_dict.keys()
+    assert expected_indices_dict.keys() == index_store.ngrams_indices_dict.keys()
 
-    for token, docs in index_store.indices_dict.items():
+    for token, docs in index_store.ngrams_indices_dict.items():
         assert expected_indices_dict[token] == docs
