@@ -28,9 +28,8 @@ if __name__ == "__main__":
     with open("data/input/companies.json", "rb") as jf:
         companies = json.load(jf)
 
-    processing_type = "n-grams"
     documents = load_documents("data/input/documents.xlsx")
-    processor = Processor(type=processing_type)
+    processor = Processor()
     in_memory_index_store = InMemoryIndexStore()
     indexer = Indexer(processor, in_memory_index_store)
     indexer.index_docs(list(documents.values()))

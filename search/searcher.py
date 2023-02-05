@@ -2,6 +2,7 @@ from collections import defaultdict
 from typing import List, Tuple
 
 from search.index_store.index_store import IndexStore
+from sklearn.metrics.pairwise import cosine_similarity
 
 
 class Searcher:
@@ -10,6 +11,12 @@ class Searcher:
     def __init__(self, processor, index_store: IndexStore):
         self.processor = processor
         self.index_store = index_store
+
+    @staticmethod
+    def compute_similarity(doc_embeddings, query_embeddings):
+        # Compute the similarity between document and query embeddings
+        similarities = cosine_similarity(doc_embeddings, query_embeddings)
+        return similarities
 
     def search(self, query_terms: List[str]) -> List[Tuple[str, List[str]]]:
         """Filter document based on input query terms.
