@@ -12,12 +12,12 @@ def test_indexer():
     ]
 
     expected_indices_dict = {
-        ("token1", ): {"id_1"},
-        ("token2", ): {"id_1", "id_2", "id_3"},
-        ("token3", ): {"id_1"},
-        ("token4", ): {"id_2"},
-        ("token5", ): {"id_2", "id_3"},
-        ("token6", ): {"id_3"},
+        ("token1",): {"id_1"},
+        ("token2",): {"id_1", "id_2", "id_3"},
+        ("token3",): {"id_1"},
+        ("token4",): {"id_2"},
+        ("token5",): {"id_2", "id_3"},
+        ("token6",): {"id_3"},
     }
     processor = Processor(n=1)
     index_store = InMemoryIndexStore()
