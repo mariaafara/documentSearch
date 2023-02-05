@@ -5,12 +5,10 @@ import pandas as pd
 from tqdm import tqdm
 
 from search.document import Document
-from search.index_store.embedding_in_memory import EmbeddingInMemoryIndexStore
-from search.index_store.in_memory import InMemoryIndexStore
+from search.index_store import InMemoryIndexStore, EmbeddingInMemoryIndexStore
 from search.indexer import EmbeddingIndexer, Indexer
 from search.processor import EmbeddingProcessor, Processor
-from search.searcher.embedding_searcher import EmbeddingSearcher
-from search.searcher.searcher import Searcher
+from search.searcher import Searcher, EmbeddingSearcher
 
 
 def load_documents(excel_path) -> Dict[str, Document]:
