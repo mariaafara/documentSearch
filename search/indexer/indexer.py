@@ -14,6 +14,9 @@ class Indexer:
 
     def index_docs(self, documents: List[Document]) -> None:
         for document in documents:
-            tokenized_doc, _, = self.processor.preprocess(document.text)
+            (
+                tokenized_doc,
+                _,
+            ) = self.processor.preprocess(document.text)
             self.index_store.add_doc(document.id, tokenized_doc)
             # print(self.index_store.indices_dict)

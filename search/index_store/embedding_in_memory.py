@@ -13,7 +13,9 @@ class EmbeddingInMemoryIndexStore(InMemoryIndexStore):
 
     def __init__(self):
         super(InMemoryIndexStore).__init__()
-        self.ngrams_indices_dict = defaultdict(set)  # {ngram: [doc_id ngram mentions in]}
+        self.ngrams_indices_dict = defaultdict(
+            set
+        )  # {ngram: [doc_id ngram mentions in]}
         self.document_indices = {}  # {document_id: document_embedding}
 
     def add_doc(self, doc_id, ngrams, document_embedding=None) -> None:

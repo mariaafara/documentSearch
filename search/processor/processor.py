@@ -8,7 +8,6 @@ nltk.download("stopwords")
 
 
 class Processor:
-
     def __init__(self, n=2):
         self.n = n
 

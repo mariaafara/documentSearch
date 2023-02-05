@@ -28,7 +28,9 @@ class Searcher:
         queried_terms = set()
         for term in query_terms:
             processed_term, _ = self.processor.preprocess(term)
-            search_query = set(processed_term) - queried_terms  # query new tokens or n-grams
+            search_query = (
+                set(processed_term) - queried_terms
+            )  # query new tokens or n-grams
 
             # print(processed_term, "--", search_query)
             queried_terms.update(search_query)

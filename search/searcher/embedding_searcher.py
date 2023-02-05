@@ -14,8 +14,12 @@ from search.searcher.searcher import Searcher
 class EmbeddingSearcher(Searcher):
     """Class to search for documents based on a query."""
 
-    def __init__(self, processor: EmbeddingProcessor, index_store: EmbeddingInMemoryIndexStore,
-                 similarity_threshold=0.25):
+    def __init__(
+        self,
+        processor: EmbeddingProcessor,
+        index_store: EmbeddingInMemoryIndexStore,
+        similarity_threshold=0.25,
+    ):
         super().__init__(processor, index_store)
         self.processor = processor
         self.index_store = index_store
@@ -39,11 +43,12 @@ class EmbeddingSearcher(Searcher):
         query_embeddings = []
         for term in query_terms:
             preprocessed_term, embedded_term = self.processor.preprocess(term)
-            search_query = set(preprocessed_term) - queried_terms  # query new tokens or n-grams
+            search_query = (
+                set(preprocessed_term) - queried_terms
+            )  # query new tokens or n-grams
 
             queried_terms.update(search_query)
             if search_query:
-
                 query_embeddings.append(embedded_term)
 
                 term_result = self.index_store.get_docs(ngrams=list(search_query))
@@ -54,8 +59,11 @@ class EmbeddingSearcher(Searcher):
         print(f"queried_terms= {queried_terms}")
 
         selected_doc_ids = list(
-            result_dict.keys())  # get the id of the documents where terms from the query are matched in
-        query_average_embedding = np.mean(query_embeddings, axis=0)  # average the embeddings of the query ngrams
+            result_dict.keys()
+        )  # get the id of the documents where terms from the query are matched in
+        query_average_embedding = np.mean(
+            query_embeddings, axis=0
+        )  # average the embeddings of the query ngrams
 
         # compute a similarity score between the averaged query embedding and each matched document embedding
         # to rank and to filter out those of which are the least similar based on a similarity threshold
@@ -64,18 +72,27 @@ class EmbeddingSearcher(Searcher):
             similarity_score = self.compute_similarity(
                 doc_embeddings=self.index_store.document_indices[doc_id].reshape(1, -1),
                 # reshape each to 2-dimensional numpy array
-                query_embeddings=query_average_embedding.reshape(1, -1))
+                query_embeddings=query_average_embedding.reshape(1, -1),
+            )
 
-            similarities_dict[doc_id] = similarity_score[0][0]  # store the similarity score
+            similarities_dict[doc_id] = similarity_score[0][
+                0
+            ]  # store the similarity score
             # rank the documents based on their scores while excluding those which don't fulfill the similarity
             # threshold defined. The score is preserved for future need if needed.
-        scores = [(doc_id, score) for doc_id, score in
-                  sorted(similarities_dict.items(), key=lambda x: x[1], reverse=True) if
-                  score >= self.similarity_threshold]
+        scores = [
+            (doc_id, score)
+            for doc_id, score in sorted(
+                similarities_dict.items(), key=lambda x: x[1], reverse=True
+            )
+            if score >= self.similarity_threshold
+        ]
         similar_doc_ids = [doc_id for doc_id, _ in scores]
 
         print(f"On ngram match: {len(selected_doc_ids)} docs are selected.")
-        print(f"Using Semantic similarity {len(similar_doc_ids)} docs are then selected.")
+        print(
+            f"Using Semantic similarity {len(similar_doc_ids)} docs are then selected."
+        )
 
         # only retrieve documents which are semantically similar and their ngrams that were matched in the document
         filtered_docs_with_matches = []

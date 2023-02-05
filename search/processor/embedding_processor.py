@@ -4,7 +4,7 @@ from search.processor.processor import Processor
 import spacy
 
 # Load the pre-trained language model
-nlp = spacy.load('en_core_web_sm')
+nlp = spacy.load("en_core_web_sm")
 
 
 class EmbeddingProcessor(Processor):
