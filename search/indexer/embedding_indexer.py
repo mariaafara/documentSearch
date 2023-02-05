@@ -1,5 +1,7 @@
 from typing import List
 
+from tqdm import tqdm
+
 from search.document import Document
 from search.index_store.embedding_in_memory import EmbeddingInMemoryIndexStore
 from search.index_store.index_store import IndexStore
@@ -19,12 +21,11 @@ class EmbeddingIndexer(Indexer):
         self.index_store = index_store
 
     def index_docs(self, documents: List[Document]) -> None:
-        for document in documents:
-            print(document.id)
+        """Index batch of documents."""
+        for document in tqdm(documents, desc="Indexing documents."):
             preprocessed_doc, embedded_doc = self.processor.preprocess(document.text)
             self.index_store.add_doc(
                 doc_id=document.id,
                 ngrams=preprocessed_doc,
                 document_embedding=embedded_doc,
             )
-            # print(self.index_store.ngrams_indices_dict)

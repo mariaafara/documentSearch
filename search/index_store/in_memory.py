@@ -14,9 +14,8 @@ class InMemoryIndexStore(IndexStore):
 
     def __init__(self):
         super().__init__()
-        self.ngrams_indices_dict = defaultdict(
-            set
-        )  # {ngram: [doc_id ngram mentions in]}
+        self.ngrams_indices_dict = defaultdict(set)
+        # {ngram: [doc_id ngram mentions in]}
 
     def add_doc(self, doc_id, ngrams, **kwargs) -> None:
         """Add a single indexed document to the store."""
@@ -30,7 +29,10 @@ class InMemoryIndexStore(IndexStore):
             self.ngrams_indices_dict[index[0]].update(index[1])
 
     def get_docs(self, ngrams: List[Tuple], **kwargs) -> List[Tuple[Tuple, List[str]]]:
-        """return List[Tuple[str, List[str]]]: [(doc_id, [tokens matched in doc]),etc]"""
+        """Lookup self.ngrams_indices_dict to get list of documents that contain the input ngrams.
+
+        return List[Tuple[str, List[str]]]. e.g. [(doc_id, [tokens matched in doc]),etc]
+        """
         result_dict = defaultdict(list)
         for ngram in ngrams:
             docs_ids = self.ngrams_indices_dict[ngram]

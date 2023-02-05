@@ -1,5 +1,7 @@
 from typing import List
 
+from tqdm import tqdm
+
 from search.document import Document
 from search.index_store.index_store import IndexStore
 from search.processor.processor import Processor
@@ -13,7 +15,8 @@ class Indexer:
         self.index_store = index_store
 
     def index_docs(self, documents: List[Document]) -> None:
-        for document in documents:
+        """Index batch of documents."""
+        for document in tqdm(documents, desc="Indexing documents."):
             print(document.id)
             (
                 tokenized_doc,

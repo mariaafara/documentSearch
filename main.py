@@ -29,8 +29,7 @@ def load_documents(excel_path) -> Dict[str, Document]:
 def save(company_id, search_result):
     filtered_docs_records = []
     if search_result:
-        filtered_docs_record = {}
-        for doc_id, mentions in search_result:
+        for doc_id, mentions in tqdm(search_result, desc="Store search results."):
             filtered_docs_record = {
                 "extracted": documents[doc_id].extracted_at,
                 "id": documents[doc_id].id,
@@ -72,11 +71,11 @@ if __name__ == "__main__":
 
     # indexer.index_docs(list(documents.values())[:])
     in_memory_index_store.load()
-    for company_id, company_terms in companies.items():
-        print(company_id, company_terms)
+    for company_id, company_terms in tqdm(companies.items(), desc="Search companies."):
+        print(f"searching for company {company_id} with keywords: {company_terms}")
         search_result = searcher.search(query_terms=company_terms)
-
         save(company_id, search_result)
+
         print(
             "Search Query for company ",
             company_id,

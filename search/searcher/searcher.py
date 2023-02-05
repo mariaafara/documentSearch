@@ -2,7 +2,6 @@ from collections import defaultdict
 from typing import List, Tuple
 
 from search.index_store.in_memory import InMemoryIndexStore
-from search.index_store.index_store import IndexStore
 from sklearn.metrics.pairwise import cosine_similarity
 
 from search.processor import Processor
@@ -22,7 +21,7 @@ class Searcher:
         return similarities
 
     def _prepare_query(self, query_terms):
-        """"""
+        """Prepare the search query."""
         queried_terms = set()
         for term in query_terms:
             processed_term, _ = self.processor.preprocess(term)
@@ -30,6 +29,7 @@ class Searcher:
         return list(queried_terms)
 
     def _aggregate_docs(self, raw_result):
+        """Reformat dictionary."""
         result_dict = defaultdict(set)
         for doc_id, matched_tokens in raw_result:
             result_dict[doc_id].update(matched_tokens)

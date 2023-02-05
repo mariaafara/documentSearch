@@ -10,6 +10,7 @@ nlp = spacy.load("en_core_web_sm")
 class EmbeddingProcessor(Processor):
     @staticmethod
     def compute_embedding(text: str):
+        """Compute text embedding using SpaCy model."""
         return nlp(text).vector
 
     def compute_document_embedding(self, text: str):

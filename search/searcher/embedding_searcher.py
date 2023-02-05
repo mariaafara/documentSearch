@@ -25,7 +25,7 @@ class EmbeddingSearcher(Searcher):
         self.similarity_threshold = similarity_threshold
 
     def _prepare_query(self, query_terms):
-        """"""
+        """Prepare the search query."""
         queried_terms = set()
         query_embeddings = []
         for term in query_terms:
