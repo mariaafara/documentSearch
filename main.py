@@ -63,6 +63,4 @@ if __name__ == "__main__":
                 "appeared in ",
                 len(search_result),
             )
-            print("Filtered Document IDS")
-            print(search_result)
             print("*" * 10)
