@@ -1,6 +1,6 @@
 import pickle
-from typing import List, Tuple
 from collections import defaultdict
+from typing import List, Tuple
 
 from search.index_store.index_store import IndexStore
 

@@ -1,6 +1,7 @@
-from typing import List, Tuple, Union
-import nltk
 import string
+from typing import List, Tuple, Union
+
+import nltk
 import numpy as np
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer

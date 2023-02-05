@@ -5,7 +5,6 @@ import numpy as np
 
 from search.index_store.embedding_in_memory import EmbeddingInMemoryIndexStore
 from search.index_store.index_store import IndexStore
-
 from search.processor.embedding_processor import EmbeddingProcessor
 from search.searcher.searcher import Searcher
 
@@ -52,6 +51,4 @@ class EmbeddingSearcher(Searcher):
             similarity_threshold=self.similarity_threshold,
         )
         result_dict = self._aggregate_docs(term_result)
-        print("-" * 10)
-        print(f"queried_terms= {prepared_query}")
         return list(result_dict.items())

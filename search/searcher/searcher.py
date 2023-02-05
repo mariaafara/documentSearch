@@ -2,8 +2,6 @@ from collections import defaultdict
 from typing import List, Tuple
 
 from search.index_store.in_memory import InMemoryIndexStore
-from sklearn.metrics.pairwise import cosine_similarity
-
 from search.processor import Processor
 
 
