@@ -54,17 +54,19 @@ if __name__ == "__main__":
 
     documents = load_documents("data/input/documents.xlsx")
 
+    n_gram = 4
+    similarity_threshold = 0.4
     if search_type == "exact-match":
-        processor = Processor()
+        processor = Processor(n=n_gram)
         in_memory_index_store = InMemoryIndexStore()
         indexer = Indexer(processor, in_memory_index_store)
         searcher = Searcher(processor, in_memory_index_store)
 
     else:
-        processor = EmbeddingProcessor()
+        processor = EmbeddingProcessor(n=n_gram)
         in_memory_index_store = EmbeddingInMemoryIndexStore()
         indexer = EmbeddingIndexer(processor, in_memory_index_store)
-        searcher = EmbeddingSearcher(processor, in_memory_index_store)
+        searcher = EmbeddingSearcher(processor, in_memory_index_store, similarity_threshold=similarity_threshold)
 
     indexer.index_docs(list(documents.values()))
 

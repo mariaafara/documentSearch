@@ -3,8 +3,12 @@ import nltk
 import string
 import numpy as np
 from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
 
 nltk.download("stopwords")
+nltk.download('wordnet')
+
+lemmatizer = WordNetLemmatizer()
 
 
 class Processor:
@@ -35,19 +39,19 @@ class Processor:
         return [token for token in tokens if token.lower() not in stop_words]
 
     @staticmethod
-    def _lemmatize(tokens: List[str]):
-        pass
+    def _lemmatize(tokens: List[str]) -> List[str]:
+        return [lemmatizer.lemmatize(token) for token in tokens]
 
     @staticmethod
     def _get_ngrams(tokens: List[str], n):
         """Generate n-grams."""
-        # ngrams = set()
-        # for i in range(1, n + 1):
-        #     ngrams.update(nltk.ngrams(tokens, i))
-        if len(tokens) < n:
-            ngrams = set((nltk.ngrams(tokens, len(tokens))))
-        else:
-            ngrams = set((nltk.ngrams(tokens, n)))
+        ngrams = set()
+        for i in range(1, n + 1):
+            ngrams.update(nltk.ngrams(tokens, i))
+        # if len(tokens) < n:
+        #     ngrams = set((nltk.ngrams(tokens, len(tokens))))
+        # else:
+        #     ngrams = set((nltk.ngrams(tokens, n)))
         return ngrams  # List of Tuples of (strs)
 
     def compute_document_embedding(self, text: str):
@@ -55,13 +59,19 @@ class Processor:
         return None
 
     def preprocess(self, text: str) -> (List[Tuple[str]], Union[None, List[float]]):
+        # Remove punctuations
         text = Processor._punctuation_filter(text)
+        # Remove new lines
         text = Processor._new_lines_filter(text)
+        # Lowercase
         text = Processor._lowercase(text)
         # Tokenize the document into words
         tokens = Processor._tokenize(text)
         # Remove stopwords
         tokens = Processor._stopwords_filter(tokens)
+        # Lemmatize
+        tokens = Processor._lemmatize(tokens)
+
         ngrams = Processor._get_ngrams(tokens, self.n)
         # embedded_ngrams = Processor.compute_ngrams_embeddings(list(ngrams))
         embedded_doc = self.compute_document_embedding(text)
