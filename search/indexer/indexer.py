@@ -16,7 +16,7 @@ class Indexer:
 
     def index_docs(self, documents: List[Document]) -> None:
         """Index batch of documents."""
-        for document in tqdm(documents, desc="Indexing documents."):
+        for document in tqdm(documents, desc="Indexing documents"):
             print(document.id)
             (
                 tokenized_doc,

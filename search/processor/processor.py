@@ -48,7 +48,7 @@ class Processor:
         return [lemmatizer.lemmatize(token) for token in tokens]
 
     @staticmethod
-    def _get_ngrams(tokens: List[str], n):
+    def _get_ngrams(tokens: List[str], n) -> List[Tuple[str, ...]]:
         """Generate n-grams from input token."""
         ngrams = set()
         for i in range(1, n + 1):
@@ -57,9 +57,9 @@ class Processor:
         #     ngrams = set((nltk.ngrams(tokens, len(tokens))))
         # else:
         #     ngrams = set((nltk.ngrams(tokens, n)))
-        return ngrams  # List of Tuples of (strs)
+        return list(ngrams)  # List of Tuples of (strs)
 
-    def preprocess(self, text: str) -> List[Tuple[str]]:
+    def preprocess(self, text: str) -> List[Tuple[str, ...]]:
         """Preprocess input text."""
         # Remove punctuations
         text = Processor._punctuation_filter(text)
@@ -73,10 +73,6 @@ class Processor:
         tokens = Processor._stopwords_filter(tokens)
         # Lemmatize
         tokens = Processor._lemmatize(tokens)
-
+        # Get n-grams
         ngrams = Processor._get_ngrams(tokens, self.n)
-        return list(ngrams)
-
-    def postprocess(self, ngrams: List[Tuple[str]]):
-        """Combine contiguous N-grams."""
-        pass
+        return ngrams

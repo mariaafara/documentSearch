@@ -22,7 +22,7 @@ class EmbeddingIndexer(Indexer):
 
     def index_docs(self, documents: List[Document]) -> None:
         """Index batch of documents."""
-        for document in tqdm(documents, desc="Indexing documents."):
+        for document in tqdm(documents, desc="Indexing documents"):
             preprocessed_doc, embedded_doc = self.processor.preprocess(document.text)
             self.index_store.add_doc(
                 doc_id=document.id,

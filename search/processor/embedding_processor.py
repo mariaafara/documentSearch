@@ -1,5 +1,7 @@
 from typing import List, Tuple, Union
 
+import numpy as np
+
 from search.processor.processor import Processor
 import spacy
 
@@ -9,16 +11,12 @@ nlp = spacy.load("en_core_web_sm")
 
 class EmbeddingProcessor(Processor):
     @staticmethod
-    def compute_embedding(text: str):
+    def _compute_embedding(text: str) -> np.ndarray:
         """Compute text embedding using SpaCy model."""
         return nlp(text).vector
 
-    def compute_document_embedding(self, text: str):
-        """Embed a document."""
-        return EmbeddingProcessor.compute_embedding(text)
-
-    def preprocess(self, text: str) -> (List[Tuple[str]], Union[None, List[float]]):
+    def preprocess(self, text: str) -> (List[Tuple[str, ...]], Union[None, np.ndarray]):
         """Preprocess input text."""
         ngrams = super().preprocess(text)
-        embedded_doc = self.compute_document_embedding(text)
+        embedded_doc = EmbeddingProcessor._compute_embedding(text)
         return ngrams, embedded_doc

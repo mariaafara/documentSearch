@@ -14,13 +14,7 @@ class Searcher:
         self.processor = processor
         self.index_store = index_store
 
-    @staticmethod
-    def compute_similarity(doc_embeddings, query_embeddings):
-        """Compute the similarity between document and query embeddings."""
-        similarities = cosine_similarity(doc_embeddings, query_embeddings)
-        return similarities
-
-    def _prepare_query(self, query_terms):
+    def _prepare_query(self, query_terms) -> List[Tuple[str, ...]]:
         """Prepare the search query."""
         queried_terms = set()
         for term in query_terms:
@@ -41,12 +35,8 @@ class Searcher:
         :param query_terms: List of keywords/terms/phrases.
         :return: List of filtered document ids with the matched keywords in the document.
         """
-
         prepared_query = self._prepare_query(query_terms)
         term_result = self.index_store.get_docs(ngrams=prepared_query)
         result_dict = self._aggregate_docs(term_result)
-
-        print("-" * 10)
-        print(f"queried_terms= {prepared_query}")
 
         return list(result_dict.items())
