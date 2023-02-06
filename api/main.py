@@ -41,11 +41,6 @@ def shutdown_event():
         log.error(e)
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-
 class Document(BaseModel):
     """Model that represents a document."""
 
