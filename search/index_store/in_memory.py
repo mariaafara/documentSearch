@@ -39,12 +39,12 @@ class InMemoryIndexStore(IndexStore):
                 result_dict[doc_id].append(ngram)
         return list(result_dict.items())
 
-    def save(self):
+    def save(self, path=None):
         """Dump ngrams_indices_dict."""
-        with open("serialized_ngrams_indices_dict.pkl", "wb") as f:
+        with open(f"{(path + '/') if path else ''}serialized_ngrams_indices_dict.pkl", "wb") as f:
             pickle.dump(self.ngrams_indices_dict, f)
 
-    def load(self):
+    def load(self, path=None):
         """Load and set ngrams_indices_dict."""
-        with open("serialized_ngrams_indices_dict.pkl", "rb") as f:
+        with open(f"{(path + '/') if path else ''}serialized_ngrams_indices_dict.pkl", "rb") as f:
             self.ngrams_indices_dict = pickle.load(f)

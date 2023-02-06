@@ -113,12 +113,12 @@ class EmbeddingInMemoryIndexStore(InMemoryIndexStore):
         )
         return filtered_docs
 
-    def save(self):
-        super().save()
-        with open("serialized_document_indices.pkl", "wb") as f:
+    def save(self, path=None):
+        super().save(path=path)
+        with open(f"{(path + '/') if path else ''}serialized_document_indices.pkl", "wb") as f:
             pickle.dump(self.document_indices, f)
 
-    def load(self):
-        super().load()
-        with open("serialized_document_indices.pkl", "rb") as f:
+    def load(self, path=None):
+        super().load(path=path)
+        with open(f"{(path + '/') if path else ''}serialized_document_indices.pkl", "rb") as f:
             self.document_indices = pickle.load(f)

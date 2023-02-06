@@ -123,7 +123,7 @@ docker build -t doc_search .
 ### Run the container in the bash shell
 
 ```bash
-docker run -it -v $(pwd)/data/:/documentSearch/data doc_search /bin/bash
+docker run -it -p 8000:8000 -v $(pwd)/data/:/documentSearch/data doc_search /bin/bash
 ```
 
 - `-it` specifies that you want to run the container in an interactive mode
@@ -134,3 +134,48 @@ docker run -it -v $(pwd)/data/:/documentSearch/data doc_search /bin/bash
 - the final argument, `/bin/bash`, specifies the command to run in the container. It allows you to run commands inside
   the
   container. You can exit the shell by typing `exit`.
+
+### Run the API container
+The API allows you to run interactive queries and add new documents to the database
+
+```bash
+docker run -p 8000:8000 -v $(pwd)/data/:/documentSearch/data doc_search
+```
+
+To initiate the index store (index all the docs):
+```bash
+curl -X 'POST' 'http://localhost:8000/initiate'
+```
+
+To index a list of docs:
+```
+curl -X 'POST' \
+  'http://localhost:8000/index' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '[
+  {
+    "extracted_at": "2020-01-01",
+    "id": "id1",
+    "lang": "english",
+    "text": "A simple text to test"
+  },
+  {
+    "extracted_at": "2020-01-02",
+    "id": "id2",
+    "lang": "english",
+    "text": "Another simple text to test"
+  }
+]'
+```
+
+To query the API:
+```bash
+curl -X 'POST' \
+  'http://localhost:8000/query' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '[
+  "apple", "mac", "iphone", "inc"
+]'
+```
