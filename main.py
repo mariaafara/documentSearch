@@ -45,6 +45,7 @@ def save(company_id, search_result):
 
 
 if __name__ == "__main__":
+    
     with open("data/input/companies.json", "rb") as jf:
         companies = json.load(jf)
 
@@ -68,11 +69,10 @@ if __name__ == "__main__":
             processor, in_memory_index_store, similarity_threshold=similarity_threshold
         )
 
-    indexer.index_docs(list(documents.values())[:])
-    # in_memory_index_store.load()
+    indexer.index_docs(list(documents.values()))
     for company_id, company_terms in tqdm(companies.items(), desc="Search companies."):
         print(f"searching for company {company_id} with keywords: {company_terms}")
         search_result = searcher.search(query_terms=company_terms)
         save(company_id, search_result)
 
-        print("*" * 10)
+        print("-" * 10)
