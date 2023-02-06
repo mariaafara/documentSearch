@@ -127,9 +127,9 @@ docker run -it -p 8000:8000 -v $(pwd)/data/:/documentSearch/data doc_search /bin
 ```
 
 After entering the container run the following command to reproduce the result. (A random similarity threshold is
-hardcoded in the code and n grams is set to 3.)
+hardcoded in the code (0.4) and n grams is set to 4.)
 
-```python 
+```bash 
 python main.py
 ```
 
@@ -144,7 +144,9 @@ python main.py
 
 ### Run the API container
 
-The API allows you to run interactive queries and add new documents to the database
+A simple API is created using FastAPI to simplify using the search engine.
+
+This API allows you to run interactive queries and add new documents to the database
 
 ```bash
 docker run -p 8000:8000 -v $(pwd)/data/:/documentSearch/data doc_search
@@ -158,7 +160,7 @@ curl -X 'POST' 'http://localhost:8000/initiate'
 
 To index a list of docs:
 
-```
+```bash
 curl -X 'POST' \
   'http://localhost:8000/index' \
   -H 'accept: application/json' \

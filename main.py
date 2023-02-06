@@ -60,7 +60,6 @@ if __name__ == "__main__":
         in_memory_index_store = InMemoryIndexStore()
         indexer = Indexer(processor, in_memory_index_store)
         searcher = Searcher(processor, in_memory_index_store)
-
     else:
         processor = EmbeddingProcessor(n=n_gram)
         in_memory_index_store = EmbeddingInMemoryIndexStore()
