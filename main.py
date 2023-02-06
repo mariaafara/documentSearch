@@ -45,7 +45,7 @@ def save(company_id, search_result):
 
 
 if __name__ == "__main__":
-    
+
     with open("data/input/companies.json", "rb") as jf:
         companies = json.load(jf)
 

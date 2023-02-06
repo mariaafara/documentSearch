@@ -126,6 +126,13 @@ docker build -t doc_search .
 docker run -it -p 8000:8000 -v $(pwd)/data/:/documentSearch/data doc_search /bin/bash
 ```
 
+After entering the container run the following command to reproduce the result. (A random similarity threshold is
+hardcoded in the code and n grams is set to 3.)
+
+```python 
+python main.py
+```
+
 - `-it` specifies that you want to run the container in an interactive mode
 - `-v` option is used to specify the volume mount. The first part of the volume mount, `$(pwd)/data/`, is the host
   directory that you want to mount. The second part, `/documentSearch/data`, is the container directory where the host
@@ -136,6 +143,7 @@ docker run -it -p 8000:8000 -v $(pwd)/data/:/documentSearch/data doc_search /bin
   container. You can exit the shell by typing `exit`.
 
 ### Run the API container
+
 The API allows you to run interactive queries and add new documents to the database
 
 ```bash
@@ -143,11 +151,13 @@ docker run -p 8000:8000 -v $(pwd)/data/:/documentSearch/data doc_search
 ```
 
 To initiate the index store (index all the docs):
+
 ```bash
 curl -X 'POST' 'http://localhost:8000/initiate'
 ```
 
 To index a list of docs:
+
 ```
 curl -X 'POST' \
   'http://localhost:8000/index' \
@@ -170,6 +180,7 @@ curl -X 'POST' \
 ```
 
 To query the API:
+
 ```bash
 curl -X 'POST' \
   'http://localhost:8000/query' \

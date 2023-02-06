@@ -14,9 +14,7 @@ ADD main.py /documentSearch
 
 ADD api /documentSearch/api
 
-WORKDIR /documentSearch/api
-
 ENV PYTHONPATH=/documentSearch
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0"]
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0"]
 
