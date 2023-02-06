@@ -192,3 +192,15 @@ curl -X 'POST' \
   "apple", "mac", "iphone", "inc"
 ]'
 ```
+
+## Scalability
+
+To scale the application we need to implement an index store which uses a scalable database as backend store, and an
+indexer which processes the documents in batches and aggregate the result before storing it in the index store.
+
+For the index store, we can use a key-value database (Redis, DynamoDB, ...) or document database (MongoDB).
+
+For the indexer, we can use pySpark with the same code used in the developed indexer with some more extra steps to
+aggregate the result for each batch before adding it to the database in order to avoid overloading it.
+
+For the serving, FastAPI with multiple replicas will be enough such that the used database is scalable.
